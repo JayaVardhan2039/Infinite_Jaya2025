@@ -1,0 +1,7 @@
+C:\Users\jayavardhang\Infinite_Jaya2025\Csharp\Assignments\Assignment_3\Assignment_3\obj\Debug\Assignment_3.csproj.AssemblyReference.cache
+C:\Users\jayavardhang\Infinite_Jaya2025\Csharp\Assignments\Assignment_3\Assignment_3\obj\Debug\Assignment_3.csproj.CoreCompileInputs.cache
+C:\Users\jayavardhang\Infinite_Jaya2025\Csharp\Assignments\Assignment_3\Assignment_3\bin\Debug\Assignment_3.exe.config
+C:\Users\jayavardhang\Infinite_Jaya2025\Csharp\Assignments\Assignment_3\Assignment_3\bin\Debug\Assignment_3.exe
+C:\Users\jayavardhang\Infinite_Jaya2025\Csharp\Assignments\Assignment_3\Assignment_3\bin\Debug\Assignment_3.pdb
+C:\Users\jayavardhang\Infinite_Jaya2025\Csharp\Assignments\Assignment_3\Assignment_3\obj\Debug\Assignment_3.exe
+C:\Users\jayavardhang\Infinite_Jaya2025\Csharp\Assignments\Assignment_3\Assignment_3\obj\Debug\Assignment_3.pdb
