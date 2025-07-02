@@ -58,6 +58,7 @@ namespace CodeChallenge_1
             Question_2 q2 = new Question_2();
             //Dynamic Entry
             string s;
+            Console.WriteLine("-------Dynamic Entry--------");
             Console.WriteLine("Enter the string :");
             s = Console.ReadLine();
             Console.WriteLine("First and Last chars Reversed string :" + q2.Exchange_Char(s));
