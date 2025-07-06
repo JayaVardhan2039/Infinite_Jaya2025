@@ -43,7 +43,7 @@ namespace Assignment_6
             set { books[i] = value; }
         }
         }
-    class Student_Indexer
+    class Books_Indexer
     {
         static void Main(string[] args)
         {

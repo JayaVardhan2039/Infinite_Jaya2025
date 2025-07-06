@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BA3C2FFA-CEC1-4F0B-8ECA-9221FEA6040D}</ProjectGuid>
+    <ProjectGuid>{63294E4A-E393-4D51-BAC8-8573A59FCE11}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Assignment_6</RootNamespace>
-    <AssemblyName>Assignment_6</AssemblyName>
+    <RootNamespace>Assignment_7</RootNamespace>
+    <AssemblyName>Assignment_7</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -33,7 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Assignment_6.Count_Lines_InFile</StartupObject>
+    <StartupObject>Assignment_7.Employee_Code</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -46,13 +46,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Count_Lines_InFile.cs" />
-    <Compile Include="File_Strings_Array.cs" />
-    <Compile Include="Books_Indexer.cs" />
+    <Compile Include="Employee_Code.cs" />
+    <Compile Include="Squares_Query.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="String_Query.cs" />
+    <Compile Include="Travel_Problem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TravelConcessionLibrary\TravelConcessionLibrary.csproj">
+      <Project>{8490998d-0d1a-4f98-b6ab-cca93c43d78e}</Project>
+      <Name>TravelConcessionLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
