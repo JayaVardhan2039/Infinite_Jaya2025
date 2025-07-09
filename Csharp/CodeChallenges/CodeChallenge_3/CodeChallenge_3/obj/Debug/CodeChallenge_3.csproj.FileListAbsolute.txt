@@ -1,0 +1,7 @@
+C:\Users\jayavardhang\Infinite_Jaya2025\Csharp\CodeChallenges\CodeChallenge_3\CodeChallenge_3\bin\Debug\CodeChallenge_3.exe.config
+C:\Users\jayavardhang\Infinite_Jaya2025\Csharp\CodeChallenges\CodeChallenge_3\CodeChallenge_3\bin\Debug\CodeChallenge_3.exe
+C:\Users\jayavardhang\Infinite_Jaya2025\Csharp\CodeChallenges\CodeChallenge_3\CodeChallenge_3\bin\Debug\CodeChallenge_3.pdb
+C:\Users\jayavardhang\Infinite_Jaya2025\Csharp\CodeChallenges\CodeChallenge_3\CodeChallenge_3\obj\Debug\CodeChallenge_3.csproj.AssemblyReference.cache
+C:\Users\jayavardhang\Infinite_Jaya2025\Csharp\CodeChallenges\CodeChallenge_3\CodeChallenge_3\obj\Debug\CodeChallenge_3.csproj.CoreCompileInputs.cache
+C:\Users\jayavardhang\Infinite_Jaya2025\Csharp\CodeChallenges\CodeChallenge_3\CodeChallenge_3\obj\Debug\CodeChallenge_3.exe
+C:\Users\jayavardhang\Infinite_Jaya2025\Csharp\CodeChallenges\CodeChallenge_3\CodeChallenge_3\obj\Debug\CodeChallenge_3.pdb

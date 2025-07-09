@@ -1,0 +1,2 @@
+Hello,My name is Jayavardhan
+using System;using System.Collections.Generic;using System.Linq;using System.Text;using System.Threading.Tasks;using System.IO;/* * 3. Write a program in C# Sharp to append some text to an existing file.  * If file is not available, then create one in the same workspace. * Hint: (Use the appropriate mode of operation. Use stream writer class) */
