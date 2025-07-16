@@ -28,7 +28,7 @@ namespace CSharp_ConsoleApp
 
             for (int i = 0; i < n; i++)
             {
-                Console.WriteLine($"\nEnter Details for Employee-{i + 1}");
+                Console.WriteLine($"\nEnter Details for Employee {i + 1}");
 
                 Console.Write("Enter Employee Id: ");
                 int id = Convert.ToInt32(Console.ReadLine());
@@ -57,7 +57,7 @@ namespace CSharp_ConsoleApp
             int choice;
             do
             {
-                Console.WriteLine("\nMenu:");
+                Console.WriteLine("\nSelect Menu choice:");
                 Console.WriteLine("1. Display all employee details");
                 Console.WriteLine("2. Display employees not in Mumbai");
                 Console.WriteLine("3. Display employees with title 'AsstManager'");
@@ -81,10 +81,10 @@ namespace CSharp_ConsoleApp
                         DisplayEmployees(employees.Where(e => e.LastName.StartsWith("S")));
                         break;
                     case 5:
-                        Console.WriteLine("Exiting program...");
+                        Console.WriteLine("Evit...");
                         break;
                     default:
-                        Console.WriteLine("Invalid choice. Please try again.");
+                        Console.WriteLine("Invalid choice. Please try to select again.");
                         break;
                 }
 
