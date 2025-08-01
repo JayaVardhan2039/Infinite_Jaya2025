@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Image Overlay on Hover</title>
+    <style>
+        body {
+            background-color: #0f172a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .image-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            overflow: hidden;
+        }
+
+            .image-container img {
+                width: 100%;
+                height: 100%;
+                display: block;
+            }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            font-size: 20px;
+        }
+
+        .image-container:hover .overlay {
+            opacity: 2;
+        }
+    </style>
+</head>
+<body>
+    <!-- 1. Using HTML, CSS create display an image overlay effect on hover -->
+    <div class="image-container">
+        <img src="OIP.webp" alt="Sample Image">
+        <div class="overlay"></div>
+    </div>
+</body>
+</html>

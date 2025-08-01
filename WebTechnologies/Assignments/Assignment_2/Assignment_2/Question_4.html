@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Animation Delay Example</title>
+    <style>
+        body {
+            background-color: #0f172a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .circle {
+            width: 100px;
+            height: 100px;
+            border-radius:50px;
+            background-color: white;
+            animation: moveCircle 2s ease-in-out 1s infinite;
+        }
+
+        @keyframes moveCircle {
+            0% {
+                transform: translateX(0);
+            }
+
+            50% {
+                transform: translateY(150px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 4. How to make use of animation-delay , and then restart again -->
+    <div class="circle"></div>
+</body>
+</html>

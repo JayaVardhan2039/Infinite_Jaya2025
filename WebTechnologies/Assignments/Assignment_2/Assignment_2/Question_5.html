@@ -1,0 +1,243 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tribute to Michael Jackson</title>
+    <style>
+        body {
+            background: linear-gradient(to right, #0f0f0f, #1c1c1c);
+            color: #f0f0f0;
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        .container {
+            padding: 40px 20px;
+            animation: fadeIn 1.5s ease-in;
+        }
+
+        img {
+            width: 300px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            color: #ffcc00;
+        }
+
+        h2 {
+            font-size: 2em;
+            margin-top: 40px;
+            color: #ffcc00;
+        }
+
+        p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto 20px;
+        }
+
+        ul {
+            list-style-type: disc;
+            padding-left: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        li {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .quote {
+            font-style: italic;
+            margin: 30px auto;
+            max-width: 700px;
+            font-size: 1.2em;
+            color: #ccc;
+        }
+
+        table {
+            margin: 40px auto;
+            border-collapse: collapse;
+            width: 90%;
+            max-width: 800px;
+            background-color: #222;
+            color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 15px;
+            border-bottom: 1px solid #444;
+            text-align: left;
+        }
+
+        tr:hover {
+            background-color: #333;
+        }
+
+        th {
+            background-color: #111;
+            color: #ffcc00;
+        }
+
+        .legacy {
+            max-width: 800px;
+            margin: 40px auto;
+            font-size: 1.1em;
+            line-height: 1.7;
+        }
+
+        footer {
+            background-color: #111;
+            padding: 20px;
+            text-align: center;
+            color: #aaa;
+            font-size: 0.9em;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            img {
+                width: 90%;
+            }
+
+            h1 {
+                font-size: 2.2em;
+            }
+
+            p, li {
+                font-size: 1em;
+            }
+        }
+        .albums {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .album {
+            width: 200px;
+            text-align: center;
+        }
+
+            .album img {
+                width: 100%;
+                border-radius: 8px;
+            }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="MJ-1.jpg" alt="Michael Jackson 1" />
+        <img src="MJ-2.jpg" alt="Michael Jackson 2" />
+        <h1>Michael Jackson</h1>
+        <p>Michael Joseph Jackson (1958–2009), known as the "King of Pop", was one of the most influential entertainers in the history of music. His groundbreaking performances, iconic dance moves, and timeless hits revolutionized pop culture and inspired generations worldwide.</p>
+
+        <h2>Achievements</h2>
+        <ul>
+            <li>Lead singer of The Jackson 5 at a young age</li>
+            <li>Released <em>Thriller</em> (1982), the best-selling album of all time</li>
+            <li>Won 13 Grammy Awards and numerous other honors</li>
+            <li>Invented iconic dance moves like the Moonwalk</li>
+            <li>Transformed music videos into cinematic experiences</li>
+            <li>Inducted twice into the Rock & Roll Hall of Fame</li>
+            <li>Known for humanitarian efforts and global influence</li>
+        </ul>
+        <h2>Albums</h2>
+        <div class="albums">
+            <div class="album">
+                <img src="covers/GotToBeThere.webp" alt="Got to Be There Album Cover">
+                <p><strong>Got to Be There</strong> (1972)</p>
+            </div>
+            <div class="album">
+                <img src="covers/Ben.webp" alt="Ben Album Cover">
+                <p><strong>Ben</strong> (1972)</p>
+            </div>
+            <div class="album">
+                <img src="covers/MusicAndMe.webp" alt="Music & Me Album Cover">
+                <p><strong>Music & Me</strong> (1973)</p>
+            </div>
+            <div class="album">
+                <img src="covers/ForeverMichael.jpg" alt="Forever, Michael Album Cover">
+                <p><strong>Forever, Michael</strong> (1975)</p>
+            </div>
+            <div class="album">
+                <img src="covers/OffTheWall.webp" alt="Off the Wall Album Cover">
+                <p><strong>Off the Wall</strong> (1979)</p>
+            </div>
+            <div class="album">
+                <img src="covers/Thriller.jpg" alt="Thriller Album Cover">
+                <p><strong>Thriller</strong> (1982)</p>
+            </div>
+            <div class="album">
+                <img src="covers/Bad.jpg" alt="Bad Album Cover">
+                <p><strong>Bad</strong> (1987)</p>
+            </div>
+            <div class="album">
+                <img src="covers/Dangerous.webp" alt="Dangerous Album Cover">
+                <p><strong>Dangerous</strong> (1991)</p>
+            </div>
+            <div class="album">
+                <img src="covers/HIStory.jpg" alt="HIStory Album Cover">
+                <p><strong>HIStory: Past, Present and Future, Book I</strong> (1995)</p>
+            </div>
+            <div class="album">
+                <img src="covers/Invincible.jpg" alt="Invincible Album Cover">
+                <p><strong>Invincible</strong> (2001)</p>
+            </div>
+        </div>
+
+        <h2>Key Moments</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Year</th>
+                    <th>Moment</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>1969</td><td>Debuted with The Jackson 5</td></tr>
+                <tr><td>1982</td><td>Released <em>Thriller</em></td></tr>
+                <tr><td>1983</td><td>Performed Moonwalk on TV</td></tr>
+                <tr><td>1993</td><td>Received Grammy Legend Award</td></tr>
+                <tr><td>2009</td><td>Passed away, leaving a global legacy</td></tr>
+            </tbody>
+        </table>
+
+        <div class="quote">“If you wanna make the world a better place, take a look at yourself and make a change.” – Michael Jackson</div>
+
+        <h2>MJ Legacy</h2>
+        <div class="legacy">
+            Michael Jackson's legacy continues to shape music, dance, and entertainment. His influence spans across genres and generations, inspiring artists worldwide. From his philanthropic efforts to his innovative artistry, Jackson remains a symbol of creativity, compassion, and excellence.
+        </div>
+    </div>
+
+    <footer>
+        Made in honor of Michael Jackson
+    </footer>
+</body>
+</html>

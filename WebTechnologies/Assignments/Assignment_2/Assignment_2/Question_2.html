@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Glowing CSS3 Button</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background-color: #0f172a;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular';
+        }
+
+        .btn-wrapper {
+            padding: 10px;
+            border-radius: 60px;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .btn {
+            background-color: #ffffff;
+            padding: 14px 28px;
+            font-size: 16px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-wrapper:hover {
+            box-shadow: 0 0 15px 5px #ffffff; 
+        }
+
+        .btn:hover {
+            transform: scale(1.05); 
+        }
+
+        .btn:active {
+            transform: scale(0.97); /* click feedback */
+        }
+    </style>
+</head>
+<body>
+    <!-- 2. Create a CSS3 based button using style elements/properties-->
+    <div class="btn-wrapper">
+        <button class="btn" onclick="alert('Clicked!')">Click Me</button>
+    </div>
+</body>
+</html>
