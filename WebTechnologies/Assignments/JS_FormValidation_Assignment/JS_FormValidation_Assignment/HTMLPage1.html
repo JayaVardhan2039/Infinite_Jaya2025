@@ -1,0 +1,205 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        body {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            background-color: aquamarine;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 25px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input {
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            outline: none;
+        }
+
+            input.success {
+                border-color: green;
+            }
+
+            input.error-input {
+                border-color: red;
+            }
+
+        small {
+            color: red;
+            display: none;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+            button:hover {
+                background-color: #0056b3;
+            }
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <form id="signupForm">
+            <h2>Sign Up</h2>
+
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" />
+            <small class="error">Username must be between 3 and 25 characters.</small>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" />
+            <small class="error">Invalid email format.</small>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" />
+            <small class="error">
+                Password must has at least 8 characters that include at least 1 lowercase character, 1 uppercase character, 1 number, and 1 special character in (!@#$%^&*)
+            </small>
+
+            <label for="confirmPassword">Confirm Password:</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" />
+            <small class="error">Please enter the password again</small>
+
+            <button type="submit">SIGN UP</button>
+        </form>
+    </div>
+</body>
+<script>
+    function setError(input, show) {
+        const small = input.nextElementSibling;
+        if (show) {
+            input.classList.add('error-input');
+            input.classList.remove('success');
+            small.style.display = 'block';
+        } else {
+            input.classList.remove('error-input');
+            input.classList.add('success');
+            small.style.display = 'none';
+        }
+    }
+
+    function validateUsername() {
+        const value = document.getElementById('username').value.trim();
+        return value.length >= 3 && value.length <= 25;
+    }
+
+    function validateEmail() {
+        const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return pattern.test(document.getElementById('email').value.trim());
+    }
+
+    function validatePassword() {
+        const pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
+        return pattern.test(document.getElementById('password').value);
+    }
+
+    function validateConfirmPassword() {
+        const password = document.getElementById('password').value;
+        const confirm = document.getElementById('confirmPassword').value;
+        return confirm === password && confirm !== '';
+    }
+
+    function validateAll() {
+        const username = document.getElementById('username');
+        const email = document.getElementById('email');
+        const password = document.getElementById('password');
+        const confirmPassword = document.getElementById('confirmPassword');
+
+        let isValid = true;
+
+        if (!validateUsername()) {
+            setError(username, true);
+            isValid = false;
+        } else {
+            setError(username, false);
+        }
+
+        if (!validateEmail()) {
+            setError(email, true);
+            isValid = false;
+        } else {
+            setError(email, false);
+        }
+
+        if (!validatePassword()) {
+            setError(password, true);
+            isValid = false;
+        } else {
+            setError(password, false);
+        }
+
+        if (!validateConfirmPassword()) {
+            setError(confirmPassword, true);
+            isValid = false;
+        } else {
+            setError(confirmPassword, false);
+        }
+
+        return isValid;
+    }
+
+    window.onload = function () {
+        document.getElementById('username').addEventListener('input', () => {
+            setError(document.getElementById('username'), !validateUsername());
+        });
+
+        document.getElementById('email').addEventListener('input', () => {
+            setError(document.getElementById('email'), !validateEmail());
+        });
+
+        document.getElementById('password').addEventListener('input', () => {
+            setError(document.getElementById('password'), !validatePassword());
+        });
+
+        document.getElementById('confirmPassword').addEventListener('input', () => {
+            setError(document.getElementById('confirmPassword'), !validateConfirmPassword());
+        });
+
+        document.getElementById('signupForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            if (validateAll()) {
+                alert('Form submitted successfully!');
+            }
+        });
+    };
+</script>
+
+</html>
