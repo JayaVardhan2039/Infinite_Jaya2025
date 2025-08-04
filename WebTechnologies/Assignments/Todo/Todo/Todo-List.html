@@ -1,0 +1,245 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>To-Do List</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            background-color: #1f1f1f;
+            color: #ffffff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+            button:hover {
+                background-color: #333333;
+            }
+
+        #taskForm {
+            display: none;
+            margin-top: 20px;
+        }
+
+        input[type="text"], input[type="datetime-local"], select {
+            padding: 10px;
+            margin: 5px 0;
+            width: 250px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #1e1e1e;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            animation: fadeIn 0.5s ease-in-out;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+            li.completed {
+                text-decoration: line-through;
+                color: #888;
+            }
+
+        .task-text {
+            flex: 1;
+        }
+
+        .timestamp {
+            font-size: 0.8em;
+            color: #aaa;
+            margin-left: 10px;
+        }
+
+        .importance {
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .delete-btn {
+            background-color: #ff4c4c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+            .delete-btn:hover {
+                background-color: #ff1a1a;
+            }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h2>To-Do List</h2>
+    <button onclick="showForm()">Add Task</button>
+    <button onclick="clearAll()">Clear All</button>
+
+    <div id="taskForm">
+        <label>Task:</label>
+        <input type="text" id="taskInput" placeholder="Enter your task" />
+
+        <label>
+            <input type="checkbox" id="setTimeCheckbox" onchange="toggleTimeInput()" />
+            Set reminder time?
+        </label>
+
+        <input type="datetime-local" id="taskTime" style="display:none;" />
+
+        <label>Importance Level:</label>
+        <select id="importanceLevel">
+            <option value="High">Highly Important</option>
+            <option value="Medium">Medium Level</option>
+            <option value="Low">Not That Important</option>
+        </select>
+
+        <button onclick="submitTask()">Submit Task</button>
+    </div>
+
+    <ul id="taskList"></ul>
+
+    <script>
+        function showForm() {
+            document.getElementById('taskForm').style.display = 'block';
+        }
+
+        function toggleTimeInput() {
+            var checkbox = document.getElementById('setTimeCheckbox');
+            var timeInput = document.getElementById('taskTime');
+            timeInput.style.display = checkbox.checked ? 'block' : 'none';
+        }
+
+        function submitTask() {
+            var task = document.getElementById('taskInput').value;
+            var setTime = document.getElementById('setTimeCheckbox').checked;
+            var timeValue = document.getElementById('taskTime').value;
+            var importance = document.getElementById('importanceLevel').value;
+
+            if (task === '') {
+                alert("Please enter a task");
+                return;
+            }
+
+            var li = document.createElement('li');
+            li.setAttribute('data-importance', importance);
+
+            var taskText = document.createElement('span');
+            taskText.className = 'task-text';
+            taskText.innerText = task;
+
+            var timestamp = document.createElement('span');
+            timestamp.className = 'timestamp';
+            var now = new Date();
+            timestamp.innerText = now.toLocaleString();
+
+            var importanceTag = document.createElement('span');
+            importanceTag.className = 'importance';
+            importanceTag.innerText = importance;
+
+            li.appendChild(taskText);
+            li.appendChild(timestamp);
+            li.appendChild(importanceTag);
+
+            li.onclick = function (e) {
+                if (e.target.className !== 'delete-btn') {
+                    li.classList.toggle('completed');
+                }
+            };
+
+            var delBtn = document.createElement('button');
+            delBtn.innerText = "Delete";
+            delBtn.className = "delete-btn";
+            delBtn.onclick = function () {
+                li.remove();
+            };
+
+            li.appendChild(delBtn);
+
+            insertTaskByImportance(li);
+            document.getElementById('taskInput').value = '';
+            document.getElementById('setTimeCheckbox').checked = false;
+            document.getElementById('taskTime').value = '';
+            document.getElementById('taskTime').style.display = 'none';
+            document.getElementById('taskForm').style.display = 'none';
+
+            if (setTime && timeValue) {
+                var reminderTime = new Date(timeValue);
+                var interval = setInterval(function () {
+                    var currentTime = new Date();
+                    if (currentTime >= reminderTime) {
+                        alert(" Reminder: " + task);
+                        clearInterval(interval);
+                    }
+                }, 1000);
+            }
+        }
+
+        function insertTaskByImportance(taskElement) {
+            var list = document.getElementById('taskList');
+            var importanceOrder = { "High": 1, "Medium": 2, "Low": 3 };
+            var newImportance = importanceOrder[taskElement.getAttribute('data-importance')];
+
+            var inserted = false;
+            for (var i = 0; i < list.children.length; i++) {
+                var existingImportance = importanceOrder[list.children[i].getAttribute('data-importance')];
+                if (newImportance < existingImportance) {
+                    list.insertBefore(taskElement, list.children[i]);
+                    inserted = true;
+                    break;
+                }
+            }
+
+            if (!inserted) {
+                list.appendChild(taskElement);
+            }
+        }
+
+        function clearAll() {
+            document.getElementById('taskList').innerHTML = '';
+        }
+    </script>
+</body>
+</html>
