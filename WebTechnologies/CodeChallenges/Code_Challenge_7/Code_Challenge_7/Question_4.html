@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.4.1.min.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            //toggle odd rows
+            $('#toggleBtn').click(function () {
+                $('table tr').each(function (index) {
+                    if (index % 2 !== 0) {
+                        $(this).toggle();
+                    }
+                });
+            });
+        });
+    </script>
+
+
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 50%;
+        }
+
+        td, th {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: lightblue;
+        }
+    </style>
+
+</head>
+
+<body>
+    <!--4. Use and write the correct selector to hide all odd table rows in a table.-->
+    <h2>Table Row Hiding using JavaScript</h2>
+    <table>
+        <tr><th>Car Model</th><th>Company</th></tr>
+        <tr><td>Swift</td><td>Maruti Suzuki</td></tr>
+        <tr><td>i20</td><td>Hyundai</td></tr>
+        <tr><td>City</td><td>Honda</td></tr>
+        <tr><td>Altroz</td><td>Tata Motors</td></tr>
+        <tr><td>Fortuner</td><td>Toyota</td></tr>
+    </table>
+
+    <button id="toggleBtn">Toggle Odd Rows</button>
+</body>
+
+</html>

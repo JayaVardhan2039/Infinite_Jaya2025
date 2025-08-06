@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.4.1.min.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            //applying the background to h1 elements inside div
+            $('#applyStyle').click(function () {
+                $('div > h1').css("background-color", "lightgreen");
+            });
+        });
+    </script>
+
+    <style>
+        div {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+        }
+
+        #applyStyle {
+            padding: 10px;
+            font-size: 16px;
+            background-color: aquamarine;
+            border: 1px solid red;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+
+
+</head>
+<body>
+    <!--5. Find all h1 elements that are children of a div element and apply a background to them.-->
+    <h2>Applying Background to all h1 inside div</h2>
+
+    <div>
+        <h1>Welcome to WebTech,h1 inside div</h1>
+        <p>This is a paragraph inside a div.</p>
+    </div>
+
+    <div>
+        <h1>jQuery Styling,another h1 insisde div</h1>
+        <p>Another paragraph inside the same div.</p>
+    </div>
+
+    <h1>This h1 is outside any div</h1>
+
+    <button id="applyStyle">Apply Background</button>
+
+</body>
+</html>

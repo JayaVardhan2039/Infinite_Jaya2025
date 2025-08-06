@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.4.1.min.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            // Adding index numbers
+            $('#addIndex').click(function () {
+                $('li').each(function (index) {
+                    var currentText = $(this).text();
+                    $(this).text(index + " " + currentText);
+                });
+            });
+
+            // Adding alphabet letters
+            $('#addAlphabet').click(function () {
+                $('li').each(function (index) {
+                    var alphabet = String.fromCharCode(65 + index); // 65 = 'A'
+                    var currentText = $(this).text();
+                    $(this).text(alphabet + " " + currentText);
+                });
+            });
+        });
+    </script>
+
+    <style>
+        ul {
+            list-style-type: circle;
+            font-size: 18px;
+            padding: 10px;
+        }
+
+        li {
+            margin: 5px;
+        }
+
+        button {
+            margin-top: 10px;
+            margin-right: 10px;
+            padding: 8px;
+            font-size: 16px;
+            background-color: cornflowerblue;
+            border: 1px solid red;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h2>Prefix List Items with Index or Alphabet</h2>
+
+    <ul>
+        <li>CSHARP</li>
+        <li>SQL</li>
+        <li>ADO</li>
+    </ul>
+
+    <button id="addIndex">Add Index</button>
+    <button id="addAlphabet">Add Alphabet</button>
+</body>
+
+</html>

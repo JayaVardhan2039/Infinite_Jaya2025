@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.4.1.min.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            $('#myInput').on('input', function () {
+                // Removing any previously added <p> tags to avoid duplicates
+                $('p').remove();
+
+                // Appending a new <p> with the current input value
+                $('body').append('<p>' + $(this).val() + '</p>');
+            });
+        });
+    </script>
+
+
+    <style>
+        input {
+            padding: 8px;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 18px;
+            color: darkgreen;
+        }
+    </style>
+
+</head> 
+<body>
+            <!-- 8. Append a <p> element with a text message when an <input> field is changed. -->
+            <input type="text" id="myInput" placeholder="Type something and click outside" /> 
+    <br /><br />
+            <b>The p tag:</b>
+    </body> </html>

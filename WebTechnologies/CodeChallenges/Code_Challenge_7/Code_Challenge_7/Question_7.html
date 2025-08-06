@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Question_7</title>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.4.1.min.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            $('#addIndex').click(function () {
+                $('li').each(function (index) {
+                    var currentText = $(this).text();
+                    $(this).text(index + " " + currentText);
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <!--7. Write a jQuery Code to add a tag at the beginning of the list item, containing the index of the list item Sample:
+
+    <body>
+
+    <ui>
+
+    <li>CSHARP</li>
+
+    <li>SQL</li>
+
+    <li>ADO</li>
+
+    </body>.
+
+
+    As
+
+
+    0 CSHARP
+
+    1 SQ: etc..-->
+    <ul>
+        <li>CSHARP</li>
+        <li>SQL</li>
+        <li>ADO</li>
+    </ul>
+
+    <button id="addIndex">Add Index</button>
+
+</body>
+</html>

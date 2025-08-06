@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+    <style>
+        .error {
+            color: red;
+            font-size: 14px;
+        }
+
+        .result {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+
+
+
+    <script>
+        //I added the input Validation in the form
+        function isValidNumber(value) {
+            return !isNaN(value) && value.trim() !== "";
+        }
+
+        function clearErrors() {
+            document.getElementById("error1").innerText = "";
+            document.getElementById("error2").innerText = "";
+        }
+
+        function multiply() {
+            clearErrors();
+            const num1 = document.getElementById("num1").value;
+            const num2 = document.getElementById("num2").value;
+            let valid = true;
+
+            if (!isValidNumber(num1)) {
+                document.getElementById("error1").innerText = "Please enter a valid number.";
+                valid = false;
+            }
+            if (!isValidNumber(num2)) {
+                document.getElementById("error2").innerText = "Please enter a valid number.";
+                valid = false;
+            }
+
+            if (valid) {
+                const result = parseFloat(num1) * parseFloat(num2);
+                document.getElementById("result").innerText = "The Multiplication Result Is: " + result;
+            } else {
+                document.getElementById("result").innerText = "";
+            }
+        }
+
+        function divide() {
+            clearErrors();
+            const num1 = document.getElementById("num1").value;
+            const num2 = document.getElementById("num2").value;
+            let valid = true;
+
+            if (!isValidNumber(num1)) {
+                document.getElementById("error1").innerText = "Please enter a valid number.";
+                valid = false;
+            }
+            if (!isValidNumber(num2)) {
+                document.getElementById("error2").innerText = "Please enter a valid number.";
+                valid = false;
+            } else if (parseFloat(num2) === 0) {
+                document.getElementById("error2").innerText = "Cannot divide by zero.";
+                valid = false;
+            }
+
+            if (valid) {
+                const result = parseFloat(num1) / parseFloat(num2);
+                document.getElementById("result").innerText = "The Division Result Is: " + result;
+            } else {
+                document.getElementById("result").innerText = "";
+            }
+        }
+    </script>
+
+
+</head>
+<body>
+    <!--1. Write a JavaScript program to calculate multiplication and division of two numbers (input from user).-->
+
+
+    <h2>Multiply and Divide by Javascript</h2>
+    <p>1st Number: <input type="text" id="num1"> <span id="error1" class="error"></span></p>
+    <p>2nd Number: <input type="text" id="num2"> <span id="error2" class="error"></span></p>
+    <button onclick="multiply()">Multiply</button>
+    <button onclick="divide()">Divide</button>
+    <p id="result" class="result">The Result Is:</p>
+
+
+</body>
+</html>
