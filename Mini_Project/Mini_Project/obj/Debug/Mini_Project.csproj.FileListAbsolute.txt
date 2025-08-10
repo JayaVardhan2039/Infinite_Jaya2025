@@ -1,0 +1,14 @@
+C:\Users\jayavardhang\HandsOn_Infinite\Mini_Project\Mini_Project\bin\Debug\Mini_Project.exe.config
+C:\Users\jayavardhang\HandsOn_Infinite\Mini_Project\Mini_Project\bin\Debug\Mini_Project.exe
+C:\Users\jayavardhang\HandsOn_Infinite\Mini_Project\Mini_Project\bin\Debug\Mini_Project.pdb
+C:\Users\jayavardhang\HandsOn_Infinite\Mini_Project\Mini_Project\obj\Debug\Mini_Project.csproj.AssemblyReference.cache
+C:\Users\jayavardhang\HandsOn_Infinite\Mini_Project\Mini_Project\obj\Debug\Mini_Project.csproj.CoreCompileInputs.cache
+C:\Users\jayavardhang\HandsOn_Infinite\Mini_Project\Mini_Project\obj\Debug\Mini_Project.exe
+C:\Users\jayavardhang\HandsOn_Infinite\Mini_Project\Mini_Project\obj\Debug\Mini_Project.pdb
+C:\Users\jayavardhang\Infinite_Jaya2025\Mini_Project\Mini_Project\bin\Debug\Mini_Project.exe.config
+C:\Users\jayavardhang\Infinite_Jaya2025\Mini_Project\Mini_Project\bin\Debug\Mini_Project.exe
+C:\Users\jayavardhang\Infinite_Jaya2025\Mini_Project\Mini_Project\bin\Debug\Mini_Project.pdb
+C:\Users\jayavardhang\Infinite_Jaya2025\Mini_Project\Mini_Project\obj\Debug\Mini_Project.csproj.CoreCompileInputs.cache
+C:\Users\jayavardhang\Infinite_Jaya2025\Mini_Project\Mini_Project\obj\Debug\Mini_Project.exe
+C:\Users\jayavardhang\Infinite_Jaya2025\Mini_Project\Mini_Project\obj\Debug\Mini_Project.pdb
+C:\Users\jayavardhang\Infinite_Jaya2025\Mini_Project\Mini_Project\obj\Debug\Mini_Project.csproj.AssemblyReference.cache
