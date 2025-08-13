@@ -104,28 +104,71 @@ namespace Mini_Project.User_The_Admin
                 Console.WriteLine($"Error sending mail: {ex.Message}");
             }
         }
+        
+        internal static bool HasUnreadMails(int userId, string role)
+        {
+            try
+            {
+                DBConfig.OpenConnection();
+                DBConfig.Command = new SqlCommand("SELECT COUNT(*) FROM mails WHERE receiver_id = @userId AND receiver_role = @role AND read_status = 0", DBConfig.Connection);
+                DBConfig.Command.Parameters.AddWithValue("@userId", userId);
+                DBConfig.Command.Parameters.AddWithValue("@role", role);
+                int count = (int)DBConfig.Command.ExecuteScalar();
+                DBConfig.CloseConnection();
+                return count > 0;
+            }
+            catch
+            {
+                DBConfig.CloseConnection();
+                return false;
+            }
+        }
+
         internal static void ViewInbox(int userId, string role)
         {
             try
             {
                 DBConfig.OpenConnection();
 
+                // Fetch inbox messages
                 DBConfig.Command = new SqlCommand(
                     "SELECT * FROM Mails WHERE receiver_id = @id AND receiver_role = @role ORDER BY sent_at DESC",
                     DBConfig.Connection);
-
                 DBConfig.Command.Parameters.AddWithValue("@id", userId);
                 DBConfig.Command.Parameters.AddWithValue("@role", role);
 
                 DBConfig.Reader = DBConfig.Command.ExecuteReader();
 
-                Console.WriteLine("\n--- Inbox ---");
+                Console.WriteLine("\n========== INBOX ==========\n");
+
+                int messageCount = 0;
                 while (DBConfig.Reader.Read())
                 {
-                    Console.WriteLine($"From ({DBConfig.Reader["sender_role"]} ID {DBConfig.Reader["sender_id"]}) at {DBConfig.Reader["sent_at"]}: {DBConfig.Reader["message_text"]}");
+                    messageCount++;
+                    Console.WriteLine($"Message #{messageCount}");
+                    Console.WriteLine($"From     : {DBConfig.Reader["sender_role"]} (ID: {DBConfig.Reader["sender_id"]})");
+                    Console.WriteLine($"Sent At  : {Convert.ToDateTime(DBConfig.Reader["sent_at"]).ToString("dd MMM yyyy hh:mm tt")}");
+                    Console.WriteLine($"Message  : {DBConfig.Reader["message_text"]}");
+                    Console.WriteLine(new string('-', 40));
                 }
 
+                if (messageCount == 0)
+                {
+                    Console.WriteLine("No messages found in your inbox.");
+                }
+
+                Console.WriteLine("\n===========================\n");
+
                 DBConfig.CloseReader();
+
+                // Mark all unread mails as read
+                DBConfig.Command = new SqlCommand(
+                    "UPDATE Mails SET read_status = 1 WHERE receiver_id = @id AND receiver_role = @role AND read_status = 0",
+                    DBConfig.Connection);
+                DBConfig.Command.Parameters.AddWithValue("@id", userId);
+                DBConfig.Command.Parameters.AddWithValue("@role", role);
+                DBConfig.Command.ExecuteNonQuery();
+
                 DBConfig.CloseConnection();
             }
             catch (SqlException ex)

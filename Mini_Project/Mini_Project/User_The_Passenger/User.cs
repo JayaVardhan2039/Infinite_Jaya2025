@@ -21,12 +21,21 @@ namespace Mini_Project.User_The_Passenger
             {
                 Console.WriteLine();
                 Console.WriteLine($"Welcome {LoggedInUsername},");
+                
+
+                if (TravelBackend.HasUnreadMails(LoggedInUserId))
+                {
+                    Console.WriteLine("Excuse Me::You have new mails to check!");
+                }
+
                 Console.WriteLine("What do you want to do?..");
                 Console.WriteLine("1. Book Tickets");
                 Console.WriteLine("2. Cancel Tickets");
                 Console.WriteLine("3. Mailing");
                 Console.WriteLine("4. My Travel Plans");
-                Console.WriteLine("5. Logout");
+                Console.WriteLine("5. Surf the trains");
+                Console.WriteLine("6. Logout");
+                
                 Console.Write("Enter your choice: ");
 
                 string input = Console.ReadLine();
@@ -59,6 +68,9 @@ namespace Mini_Project.User_The_Passenger
                         Ledger.ShowConfirmedBookings(LoggedInUserId);
                         break;
                     case 5:
+                        TravelBackend.DisplayAllTrainsForUser();
+                        break;
+                    case 6:
                         return;
                     default:
                         Console.WriteLine("Invalid choice. Please select a valid option.");

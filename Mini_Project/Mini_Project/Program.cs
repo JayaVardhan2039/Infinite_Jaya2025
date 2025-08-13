@@ -23,7 +23,7 @@ namespace MiniProj
                 Console.WriteLine("1. Register as User");
                 Console.WriteLine("2. Login as Admin");
                 Console.WriteLine("3. Login as User");
-                Console.WriteLine("4. Exit, Thank you!");
+                Console.WriteLine("4. Want to Exit?, Thank you!");
                 Console.Write("Enter your choice: ");
 
                 string input = Console.ReadLine();
@@ -58,8 +58,6 @@ namespace MiniProj
         }
 
         //onload animation for the system
-
-
         internal static void ShowTrainAnimation()
         {
             

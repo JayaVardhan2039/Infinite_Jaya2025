@@ -97,11 +97,25 @@ namespace Mini_Project.User_The_Passenger
 
                 DBConfig.Reader = DBConfig.Command.ExecuteReader();
 
-                Console.WriteLine("\n--- Inbox ---");
+                Console.WriteLine("\n========== INBOX ==========\n");
+
+                int messageCount = 0;
                 while (DBConfig.Reader.Read())
                 {
-                    Console.WriteLine($"From ({DBConfig.Reader["sender_role"]} ID {DBConfig.Reader["sender_id"]}) at {DBConfig.Reader["sent_at"]}: {DBConfig.Reader["message_text"]}");
+                    messageCount++;
+                    Console.WriteLine($"Message #{messageCount}");
+                    Console.WriteLine($"From     : {DBConfig.Reader["sender_role"]} (ID: {DBConfig.Reader["sender_id"]})");
+                    Console.WriteLine($"Sent At  : {Convert.ToDateTime(DBConfig.Reader["sent_at"]).ToString("dd MMM yyyy hh:mm tt")}");
+                    Console.WriteLine($"Message  : {DBConfig.Reader["message_text"]}");
+                    Console.WriteLine(new string('-', 40));
                 }
+
+                if (messageCount == 0)
+                {
+                    Console.WriteLine("No messages found in your inbox.");
+                }
+
+                Console.WriteLine("\n===========================\n");
 
                 DBConfig.CloseReader();
                 DBConfig.CloseConnection();
@@ -114,6 +128,28 @@ namespace Mini_Project.User_The_Passenger
             }
         }
 
+        internal static void SendSystemMailToUser(int userId, string message)
+        {
+            try
+            {
+                DBConfig.OpenConnection();
+                DBConfig.Command = new SqlCommand(@"
+            INSERT INTO Mails (sender_id, receiver_id, sender_role, receiver_role, message_text)
+            VALUES (@sender_id, @receiver_id, 'system', 'user', @message)", DBConfig.Connection);
+
+                DBConfig.Command.Parameters.AddWithValue("@sender_id", userId); // system uses userId as sender for traceability
+                DBConfig.Command.Parameters.AddWithValue("@receiver_id", userId);
+                DBConfig.Command.Parameters.AddWithValue("@message", message);
+
+                DBConfig.Command.ExecuteNonQuery();
+                DBConfig.CloseConnection();
+            }
+            catch (SqlException)
+            {
+                DBConfig.CloseConnection();
+                Console.WriteLine("Failed to send system mail to user.");
+            }
+        }
 
 
         //for testing purpose

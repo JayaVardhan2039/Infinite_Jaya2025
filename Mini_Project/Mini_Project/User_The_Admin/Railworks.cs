@@ -114,11 +114,18 @@ namespace Mini_Project.User_The_Admin
             Console.WriteLine("3. Destination Station");
             Console.WriteLine("4. Prices");
             Console.WriteLine("5. Classes of Travel");
-            Console.WriteLine("6. Train Status");
+            Console.WriteLine("6. Train Status Activation");
             Console.WriteLine("7. Total Seats Available");
             Console.WriteLine("8. Train Classes (Add/Update/Remove)");
             Console.Write("Enter your choice (1-8): ");
-            int choice = Convert.ToInt32(Console.ReadLine());
+            string input = Console.ReadLine();
+            int choice;
+
+            if (!int.TryParse(input, out choice))
+            {
+                Console.WriteLine("Invalid input. Please enter a valid number.");
+                return;
+            }
 
             if (choice >= 1 && choice <= 7)
             {
@@ -209,7 +216,28 @@ namespace Mini_Project.User_The_Admin
 
                             for (int i = 0; i < oldClasses.Count; i++)
                             {
-                                Console.Write($"Enter new class name for class {i + 1} (old: {oldClasses[i]}): ");
+                                string oldClass = oldClasses[i];
+
+                                // Check for active bookings
+                                DBConfig.OpenConnection();
+                                DBConfig.Command = new SqlCommand(
+                                    "SELECT COUNT(*) FROM PassengerDetails pd " +
+                                    "JOIN Bookings b ON pd.booking_id = b.booking_id " +
+                                    "WHERE b.tno = @tno AND pd.status = 'booked' AND b.deleted = 0 AND b.class_name = @class",
+                                    DBConfig.Connection);
+                                DBConfig.Command.Parameters.AddWithValue("@tno", trainNumber);
+                                DBConfig.Command.Parameters.AddWithValue("@class", oldClass);
+                                int activeBookings = (int)DBConfig.Command.ExecuteScalar();
+                                DBConfig.CloseConnection();
+
+                                if (activeBookings > 0)
+                                {
+                                    Console.WriteLine($"Cannot update class '{oldClass}' because there are {activeBookings} active bookings.");
+                                    newClasses.Add(oldClass); // retain old class name
+                                    continue;
+                                }
+
+                                Console.Write($"Enter new class name for class {i + 1} (old: {oldClass}): ");
                                 string newClass = Console.ReadLine();
                                 newClasses.Add(newClass);
 
@@ -217,7 +245,7 @@ namespace Mini_Project.User_The_Admin
                                 DBConfig.OpenConnection();
                                 DBConfig.Command = new SqlCommand("UPDATE TrainClasses SET class_name = @newClass WHERE tno = @tno AND class_name = @oldClass", DBConfig.Connection);
                                 DBConfig.Command.Parameters.AddWithValue("@newClass", newClass);
-                                DBConfig.Command.Parameters.AddWithValue("@oldClass", oldClasses[i]);
+                                DBConfig.Command.Parameters.AddWithValue("@oldClass", oldClass);
                                 DBConfig.Command.Parameters.AddWithValue("@tno", trainNumber);
                                 DBConfig.Command.ExecuteNonQuery();
                                 DBConfig.CloseConnection();
@@ -241,8 +269,14 @@ namespace Mini_Project.User_The_Admin
 
                     case 6:
                         column = "train_status";
-                        Console.Write("Enter new Train Status (active/inactive): ");
+                        Console.Write("Enter new Train Status (only 'active' allowed): ");
                         newValue = Console.ReadLine().ToLower();
+
+                        if (newValue.ToString() != "active")
+                        {
+                            Console.WriteLine("You can only change status from 'inactive' to 'active'.");
+                            return;
+                        }
 
                         try
                         {
@@ -253,13 +287,18 @@ namespace Mini_Project.User_The_Admin
 
                             string currentStatus = (string)DBConfig.Command.ExecuteScalar();
 
-                            if (currentStatus.ToLower() == newValue.ToString())
+                            if (currentStatus.ToLower() == "active")
                             {
-                                Console.WriteLine($"Train is already {currentStatus}. No update needed.");
+                                Console.WriteLine("Train is already active. No update needed.");
                                 DBConfig.CloseConnection();
                                 return;
                             }
 
+                            DBConfig.Command = new SqlCommand("UPDATE Trains SET train_status = 'active' WHERE tno = @tno", DBConfig.Connection);
+                            DBConfig.Command.Parameters.AddWithValue("@tno", trainNumber);
+                            DBConfig.Command.ExecuteNonQuery();
+
+                            Console.WriteLine("Train status updated to active.");
                             DBConfig.CloseConnection();
                         }
                         catch (SqlException ex)
@@ -268,6 +307,7 @@ namespace Mini_Project.User_The_Admin
                             Console.WriteLine($"Error checking train status: {ex.Message}");
                         }
                         break;
+
                     case 7:
                         column = "seats_available";
                         Console.Write("Enter new Number of Seats Available: ");
@@ -316,6 +356,23 @@ namespace Mini_Project.User_The_Admin
                     {
                         Console.Write("Enter Class Name to Update: ");
                         string className = Console.ReadLine();
+                        // Check if class has active bookings
+                        DBConfig.Command = new SqlCommand(
+                            "SELECT COUNT(*) FROM PassengerDetails pd " +
+                            "JOIN Bookings b ON pd.booking_id = b.booking_id " +
+                            "WHERE b.tno = @tno AND pd.status = 'booked' AND b.deleted = 0 AND b.class_name = @class",
+                            DBConfig.Connection);
+                        DBConfig.Command.Parameters.AddWithValue("@tno", trainNumber);
+                        DBConfig.Command.Parameters.AddWithValue("@class", className);
+
+                        int activePassengers = (int)DBConfig.Command.ExecuteScalar();
+                        if (activePassengers > 0)
+                        {
+                            Console.WriteLine($"Cannot update/remove class '{className}' because there are {activePassengers} active bookings.");
+                            DBConfig.CloseConnection();
+                            return;
+                        }
+
                         Console.Write("Enter New Seats Available: ");
                         int newSeats = Convert.ToInt32(Console.ReadLine());
                         Console.Write("Enter New Price: ");
@@ -412,6 +469,22 @@ namespace Mini_Project.User_The_Admin
                     {
                         Console.Write("Enter Class Name to Remove: ");
                         string className = Console.ReadLine();
+                        // Check if class has active bookings
+                        DBConfig.Command = new SqlCommand(
+                            "SELECT COUNT(*) FROM PassengerDetails pd " +
+                            "JOIN Bookings b ON pd.booking_id = b.booking_id " +
+                            "WHERE b.tno = @tno AND pd.status = 'booked' AND b.deleted = 0 AND b.class_name = @class",
+                            DBConfig.Connection);
+                        DBConfig.Command.Parameters.AddWithValue("@tno", trainNumber);
+                        DBConfig.Command.Parameters.AddWithValue("@class", className);
+
+                        int activePassengers = (int)DBConfig.Command.ExecuteScalar();
+                        if (activePassengers > 0)
+                        {
+                            Console.WriteLine($"Cannot update/remove class '{className}' because there are {activePassengers} active bookings.");
+                            DBConfig.CloseConnection();
+                            return;
+                        }
 
                         try
                         {
@@ -602,27 +675,100 @@ namespace Mini_Project.User_The_Admin
         internal static void DeleteTrain()
         {
             DisplayAllTrainsForAdmin();
-            Console.Write("Enter Train Number to delete: ");
+
+            Console.Write("Enter Train Number to delete (inactivate): ");
             int trainNumber = Convert.ToInt32(Console.ReadLine());
 
             try
             {
                 DBConfig.OpenConnection();
 
-                DBConfig.Command = new SqlCommand("DELETE FROM Trains WHERE tno = @tno", DBConfig.Connection);
+                // Check if train has active bookings
+                DBConfig.Command = new SqlCommand("SELECT COUNT(*) FROM Bookings WHERE tno = @tno AND deleted = 0", DBConfig.Connection);
                 DBConfig.Command.Parameters.AddWithValue("@tno", trainNumber);
+                int activeBookings = (int)DBConfig.Command.ExecuteScalar();
 
-                int rowsAffected = DBConfig.Command.ExecuteNonQuery();
+                if (activeBookings > 0)
+                {
+                    Console.WriteLine("Warning: This train has active bookings.");
+                    Console.Write("Do you really want to delete this train and cancel all bookings? (yes/no im just kidding): ");
+                    string confirmation = Console.ReadLine()?.Trim().ToLower();
+                    if (confirmation != "yes")
+                    {
+                        Console.WriteLine("Train deletion cancelled.");
+                        DBConfig.CloseConnection();
+                        return;
+                    }
+                }
+
+                // Step 1: Mark train as inactive
+                DBConfig.Command = new SqlCommand("UPDATE Trains SET train_status = 'inactive' WHERE tno = @tno", DBConfig.Connection);
+                DBConfig.Command.Parameters.AddWithValue("@tno", trainNumber);
+                DBConfig.Command.ExecuteNonQuery();
+
+                // Step 2: Cancel bookings and refund
+                DBConfig.Command = new SqlCommand("SELECT booking_id, userid, total_amount FROM Bookings WHERE tno = @tno AND deleted = 0", DBConfig.Connection);
+                DBConfig.Command.Parameters.AddWithValue("@tno", trainNumber);
+                DBConfig.Reader = DBConfig.Command.ExecuteReader();
+
+                List<(int bookingId, int userId, decimal amount)> bookings = new List<(int, int, decimal)>();
+                while (DBConfig.Reader.Read())
+                {
+                    bookings.Add((
+                        Convert.ToInt32(DBConfig.Reader["booking_id"]),
+                        Convert.ToInt32(DBConfig.Reader["userid"]),
+                        Convert.ToDecimal(DBConfig.Reader["total_amount"])
+                    ));
+                }
+                DBConfig.CloseReader();
+
+                foreach (var booking in bookings)
+                {
+                    // Mark booking as deleted
+                    DBConfig.Command = new SqlCommand("UPDATE Bookings SET deleted = 1 WHERE booking_id = @bid", DBConfig.Connection);
+                    DBConfig.Command.Parameters.AddWithValue("@bid", booking.bookingId);
+                    DBConfig.Command.ExecuteNonQuery();
+
+                    // Insert cancellation record
+                    DBConfig.Command = new SqlCommand(
+                        "INSERT INTO Cancellations (booking_id, seats_cancelled, cancellation_date, refund_amount, refund_reason) " +
+                        "SELECT booking_id, seats_booked, GETDATE(), total_amount, 'Train Inactivated - Full Refund' FROM Bookings WHERE booking_id = @bid",
+                        DBConfig.Connection);
+                    DBConfig.Command.Parameters.AddWithValue("@bid", booking.bookingId);
+                    DBConfig.Command.ExecuteNonQuery();
+
+                    // Send mail to user
+                    string message = $"Your booking (ID: {booking.bookingId}) for train {trainNumber} has been cancelled due to train inactivation. Full refund of ₹{booking.amount} has been processed.";
+                    DBConfig.Command = new SqlCommand(
+                        "INSERT INTO Mails (sender_id, receiver_id, sender_role, receiver_role, message_text) " +
+                        "VALUES (@sender, @uid, 'admin', 'user', @msg)", DBConfig.Connection);
+                    DBConfig.Command.Parameters.AddWithValue("@sender", Admin.LoggedInAdminId);
+                    DBConfig.Command.Parameters.AddWithValue("@uid", booking.userId);
+                    DBConfig.Command.Parameters.AddWithValue("@msg", message);
+                    DBConfig.Command.ExecuteNonQuery();
+                }
+
+                // Step 3: Restore seats in trains
+                DBConfig.Command = new SqlCommand("UPDATE Trains SET seats_available = total_seats WHERE tno = @tno", DBConfig.Connection);
+                DBConfig.Command.Parameters.AddWithValue("@tno", trainNumber);
+                DBConfig.Command.ExecuteNonQuery();
+
+                // Step 4: Restore seats in trainclasses
+                DBConfig.Command = new SqlCommand("UPDATE trainclasses SET seats_available = total_seats WHERE tno = @tno", DBConfig.Connection);
+                DBConfig.Command.Parameters.AddWithValue("@tno", trainNumber);
+                DBConfig.Command.ExecuteNonQuery();
+
                 DBConfig.CloseConnection();
-
-                Console.WriteLine(rowsAffected > 0 ? "Train marked as inactive." : "Train deletion failed or train not found.");
+                Console.WriteLine("Train marked as inactive, bookings cancelled, refunds processed, and seats restored.");
             }
             catch (SqlException ex)
             {
+                DBConfig.CloseReader();
                 DBConfig.CloseConnection();
                 Console.WriteLine($"Error: {ex.Message}");
             }
         }
+
         internal static void DisplayAllTrainsForAdmin()
         {
             try

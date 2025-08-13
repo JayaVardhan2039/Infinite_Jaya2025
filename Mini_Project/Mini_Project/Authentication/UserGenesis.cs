@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Data.SqlClient;
 using Mini_Project.User_The_Passenger;
 
@@ -58,6 +59,43 @@ namespace Mini_Project.Authentication
                 Console.Write("Password must be at least 6 characters. Try again: ");
                 password = Console.ReadLine();
             }
+            Console.Write("Confirm your Password: ");
+            string confirmPassword = Console.ReadLine();
+
+            while (string.IsNullOrWhiteSpace(confirmPassword))
+            {
+                Console.Write("Confirmation cannot be empty. Try again: ");
+                confirmPassword = Console.ReadLine();
+            }
+            string role = "";
+            if (confirmPassword == password)
+            { 
+                role = "user";
+            }
+            else if (new string(password.Reverse().ToArray()) == confirmPassword)
+            {
+                Console.Write("Admin registration detected...");
+
+                Console.Write("Enter Admin Code: ");
+                string adminCode = Console.ReadLine();
+
+                if (adminCode =="ADMINFIRAIL")
+                {
+                    role = "admin";
+                    Console.WriteLine("Admin verified.");
+                }
+                else
+                {
+                    Console.WriteLine("Invalid admin code. Registration aborted.");
+                    return;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Passwords do not match. Registration aborted.");
+                return;
+            }
+
 
             Console.WriteLine();
             Console.WriteLine("Choose your username option:");
@@ -92,8 +130,19 @@ namespace Mini_Project.Authentication
                 username = firstName + lastName;
             }
 
-            bool success = Register(firstName, lastName, phone, email, password, username);
+            bool success = Register(firstName, lastName, phone, email, password, username,role);
             Console.WriteLine(success ? "Registration successful!" : "Registration failed.");
+            Console.WriteLine($"Yourusername is {username}");
+
+            Console.WriteLine($"Yourpassword is {password}");
+            Thread.Sleep(3000);
+
+            // Move cursor up one line and overwrite the password line
+            Console.SetCursorPosition(0, Console.CursorTop - 1);
+            Console.Write(new string(' ', Console.WindowWidth));
+            Console.SetCursorPosition(0, Console.CursorTop - 1);
+            Console.WriteLine();
+
             if (success)
             {
                 var credentials = LoginFlow.Authenticate(username, password);
@@ -106,7 +155,7 @@ namespace Mini_Project.Authentication
             }
 
         }
-        internal static bool Register(string firstName, string lastName, string phone, string email, string password, string username)
+        internal static bool Register(string firstName, string lastName, string phone, string email, string password, string username,string role)
         {
             try
             {
@@ -114,7 +163,7 @@ namespace Mini_Project.Authentication
 
                 DBConfig.Command = new SqlCommand(
                     "INSERT INTO Users (username, pasword, firstname, lastname, phone, email, roles) " +
-                    "VALUES (@username, @pasword, @firstname, @lastname, @phone, @email, 'user')", DBConfig.Connection);
+                    "VALUES (@username, @pasword, @firstname, @lastname, @phone, @email,@role)", DBConfig.Connection);
 
                 DBConfig.Command.Parameters.AddWithValue("@username", username);
                 DBConfig.Command.Parameters.AddWithValue("@pasword", password);
@@ -122,6 +171,7 @@ namespace Mini_Project.Authentication
                 DBConfig.Command.Parameters.AddWithValue("@lastname", lastName);
                 DBConfig.Command.Parameters.AddWithValue("@phone", phone);
                 DBConfig.Command.Parameters.AddWithValue("@email", email);
+                DBConfig.Command.Parameters.AddWithValue("@role", role);
 
                 int rowsAffected = DBConfig.Command.ExecuteNonQuery();
                 DBConfig.CloseConnection();

@@ -106,6 +106,18 @@ create table mails (
     foreign key (receiver_id) references users(userid)
 );
 
+ALTER TABLE mails ADD read_status BIT DEFAULT 0;
+
+CREATE TABLE PassengerDetails (
+    passenger_id INT PRIMARY KEY IDENTITY,
+    booking_id INT,
+    passenger_name VARCHAR(100),
+    passenger_age INT,
+    FOREIGN KEY (booking_id) REFERENCES bookings(booking_id)
+);
+ALTER TABLE PassengerDetails
+ADD status VARCHAR(10) DEFAULT 'booked';
+
 create trigger trg_softdeletetrain
 on trains
 instead of delete
@@ -160,22 +172,57 @@ insert into trainclasses (tno, class_name, seats_available, price) values
 (10010, '2ac', 33, 3300);
 
 
+
 select * from Users
 select * from Trains
 select * from TrainClasses
 select * from Bookings
+select * from PassengerDetails
 select * from Cancellations
+select * from mails
+
+
+
+
+
+
+INSERT INTO PassengerDetails (booking_id, passenger_name, passenger_age) VALUES
+(1, 'Ravi Kumar', 34),
+(2, 'Sneha Reddy', 28),
+(3, 'Arjun Das', 45),
+(4, 'Meena Iyer', 52),
+(5, 'Karthik Rao', 30),
+(6, 'Anjali Sharma', 26),
+(3, 'Priya Nair', 32),     -- Multiple passengers for booking_id 3
+(4, 'Vikram Joshi', 40),   -- Multiple passengers for booking_id 4
+(5, 'Neha Verma', 29),     -- Multiple passengers for booking_id 5
+(6, 'Rohan Mehta', 35);    -- Multiple passengers for booking_id 6
+
 
 --to get confirmed booking of logged user
-create or alter sp_GetConfirmedBookings
-    @userid int
-as
-begin
-	select booking_id, tno, class_name, seats_booked, travel_date
-    from Bookings
-    where userid = @userid AND seats_booked > 0
-    order by travel_date desc
-end
+CREATE OR ALTER PROCEDURE sp_GetConfirmedBookings
+    @userid INT
+AS
+BEGIN
+    SELECT 
+        b.booking_id, 
+        b.tno, 
+        b.class_name, 
+        b.seats_booked, 
+        b.travel_date,
+        p.passenger_name,
+        p.passenger_age
+    FROM Bookings b
+    LEFT JOIN PassengerDetails p 
+        ON b.booking_id = p.booking_id AND p.status = 'booked'
+    WHERE b.userid = @userid 
+      AND b.seats_booked > 0 
+      AND b.deleted = 0
+    ORDER BY b.travel_date DESC
+END
+
+
+
 
 --checking user is blocked or not
 create or alter procedure sp_isuserblocked
@@ -226,6 +273,11 @@ begin
     from mails
     where receiver_id = @user_id and receiver_role = @role
     order by sent_at desc;
+	
+UPDATE mails
+    SET read_status = 1
+    WHERE receiver_id = @user_id AND receiver_role = @role AND read_status = 0;
+
 end;
 
 
@@ -333,6 +385,74 @@ begin
     where tno = @tno;
 end;
 
+create or alter procedure sp_booktickets
+    @userid int,
+    @tno int,
+    @class_name varchar(20),
+    @seats_to_book int,
+    @travel_date date,
+    @berth_allotment varchar(20),
+    @booking_id int output,
+    @total_amount_bill decimal(10,2) output
+as
+begin
+    declare @price decimal(10,2);
+    declare @classseatsavailable int;
+    declare @trainseatsavailable int;
+    declare @train_status varchar(20);
+
+    -- Check train status
+    select @train_status = train_status
+    from trains
+    where tno = @tno;
+
+    if @train_status is null or @train_status <> 'active'
+    begin
+        raiserror('Train is not active.', 16, 1);
+        return;
+    end
+
+    -- Check class seat availability and price
+    select @classseatsavailable = seats_available, @price = price
+    from trainclasses
+    where tno = @tno and class_name = @class_name;
+
+    if @classseatsavailable is null or @classseatsavailable < @seats_to_book
+    begin
+        raiserror('Not enough class seats available.', 16, 1);
+        return;
+    end
+
+    -- Check overall train seat availability
+    select @trainseatsavailable = seats_available
+    from trains
+    where tno = @tno;
+
+    if @trainseatsavailable is null or @trainseatsavailable < @seats_to_book
+    begin
+        raiserror('Not enough train seats available.', 16, 1);
+        return;
+    end
+
+    -- Calculate total amount
+    declare @total_amount decimal(10,2) = @price * @seats_to_book;
+    set @total_amount_bill = @total_amount;
+
+    -- Insert booking
+    insert into bookings (tno, userid, seats_booked, booking_date, total_amount, travel_date, berth_allotment, class_name)
+    values (@tno, @userid, @seats_to_book, getdate(), @total_amount, @travel_date, @berth_allotment, @class_name);
+
+    set @booking_id = scope_identity();
+
+    -- Update seat availability
+    update trainclasses
+    set seats_available = seats_available - @seats_to_book
+    where tno = @tno and class_name = @class_name;
+
+    update trains
+    set seats_available = seats_available - @seats_to_book
+    where tno = @tno;
+end;
 
 
 
@@ -368,20 +488,21 @@ begin
     declare @refund_rate decimal(4,2);
 
     if @days_before_travel > 90
-    begin
-        set @refund_rate = 0.50;
-        set @refund_reason = 'Cancelled > 90 days before travel';
-    end
-    else if @days_before_travel > 30
-    begin
-        set @refund_rate = 0.25;
-        set @refund_reason = 'Cancelled > 30 days before travel';
-    end
-    else
-    begin
-        set @refund_rate = 0.00;
-        set @refund_reason = 'Cancelled ≤ 30 days before travel';
-    end
+begin
+    set @refund_rate = 0.50;
+    set @refund_reason = 'Cancelled > 90 days before travel';
+end
+else if @days_before_travel > 30 and @days_before_travel <= 90
+begin
+    set @refund_rate = 0.25;
+    set @refund_reason = 'Cancelled between 31 and 90 days before travel';
+end
+else
+begin
+    set @refund_rate = 0.00;
+    set @refund_reason = 'Cancelled ≤ 30 days before travel';
+end
+
 
     set @refund_amount = @seats_to_cancel * @refund_rate * 100;
 
@@ -402,8 +523,72 @@ begin
 end;
 
 
+CREATE OR ALTER PROCEDURE sp_inactivate_train_and_refund
+    @tno INT,
+    @admin_id INT
+AS
+BEGIN
+    DECLARE @booking_id INT, @user_id INT, @amount DECIMAL(10,2), @message NVARCHAR(MAX);
+
+    -- Step 1: Mark train as inactive
+    UPDATE trains SET train_status = 'inactive' WHERE tno = @tno;
+
+    -- Step 2: Process bookings
+    DECLARE booking_cursor CURSOR FOR
+    SELECT booking_id, userid, total_amount FROM bookings WHERE tno = @tno AND deleted = 0;
+
+    OPEN booking_cursor;
+    FETCH NEXT FROM booking_cursor INTO @booking_id, @user_id, @amount;
+
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+        -- Mark booking as deleted
+        UPDATE bookings SET deleted = 1 WHERE booking_id = @booking_id;
+
+        -- Insert cancellation record
+        INSERT INTO cancellations (booking_id, seats_cancelled, cancellation_date, refund_amount, refund_reason)
+        SELECT booking_id, seats_booked, GETDATE(), total_amount, 'Train Inactivated - Full Refund'
+        FROM bookings WHERE booking_id = @booking_id;
+
+        -- Send mail to user
+        SET @message = 'Your booking (ID: ' + CAST(@booking_id AS VARCHAR) + ') for train ' + CAST(@tno AS VARCHAR) +
+                       ' has been cancelled due to train inactivation. Full refund of ₹' + CAST(@amount AS VARCHAR) +
+                       ' has been processed.';
+
+        INSERT INTO mails (sender_id, receiver_id, sender_role, receiver_role, message_text)
+        VALUES (@admin_id, @user_id, 'admin', 'user', @message);
+
+        FETCH NEXT FROM booking_cursor INTO @booking_id, @user_id, @amount;
+    END
+
+    CLOSE booking_cursor;
+    DEALLOCATE booking_cursor;
+
+    -- Step 3: Restore seat counts
+    UPDATE trains SET seats_available = total_seats WHERE tno = @tno;
+
+    UPDATE tc
+    SET tc.seats_available = original.seats_available
+    FROM trainclasses tc
+    JOIN (
+        SELECT class_id, seats_available
+        FROM trainclasses
+        WHERE tno = @tno
+    ) AS original ON tc.class_id = original.class_id
+    WHERE tc.tno = @tno;
+END;
 
 
+CREATE OR ALTER PROCEDURE sp_AddPassengerDetails
+    @booking_id INT,
+    @passenger_name VARCHAR(100),
+    @passenger_age INT,
+    @status VARCHAR(10)
+AS
+BEGIN
+    INSERT INTO PassengerDetails (booking_id, passenger_name, passenger_age, status)
+    VALUES (@booking_id, @passenger_name, @passenger_age, @status);
+END;
 
 
 

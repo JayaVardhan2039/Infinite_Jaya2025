@@ -19,6 +19,10 @@ namespace Mini_Project.User_The_Admin
             {
                 Console.WriteLine();
                 Console.WriteLine("Hi,Admin! " + LoggedInAdminUsername);
+                if (Mailing.HasUnreadMails(LoggedInAdminId,"admin"))
+                {
+                    Console.WriteLine("Alert!::You have new mails to check!");
+                }
                 Console.WriteLine("Menu..");
                 Console.WriteLine("1. View Bookings");
                 Console.WriteLine("2. View Cancellations");
@@ -30,7 +34,8 @@ namespace Mini_Project.User_The_Admin
                 Console.WriteLine("8. Delete Cancellation");
                 Console.WriteLine("9. Mailing");
                 Console.WriteLine("10. Display all the trains");
-                Console.WriteLine("11. Logout");
+                Console.WriteLine("11. View all Users and search");
+                Console.WriteLine("12. Logout");
 
                 Console.Write("Enter your choice: ");
                 string input = Console.ReadLine();
@@ -54,7 +59,8 @@ namespace Mini_Project.User_The_Admin
                     case 8: Manifest.DeleteCancellation(); break;
                     case 9: Mailing.MailingMenu(LoggedInAdminId, "admin"); break;
                     case 10: Railworks.DisplayAllTrainsForAdmin(); break;
-                    case 11: return;
+                    case 11: Manifest.SearchandViewUsers();break;
+                    case 12: return;
                     default: Console.WriteLine("Invalid choice."); break;
                 }
             }

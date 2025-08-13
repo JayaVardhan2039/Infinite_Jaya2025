@@ -49,7 +49,7 @@
     <Compile Include="DBConfig.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="User_The_Admin\Comms.cs" />
+    <Compile Include="User_The_Admin\Mailing.cs" />
     <Compile Include="User_The_Admin\Manifest.cs" />
     <Compile Include="User_The_Admin\Railworks.cs" />
     <Compile Include="User_The_Admin\Security.cs" />
