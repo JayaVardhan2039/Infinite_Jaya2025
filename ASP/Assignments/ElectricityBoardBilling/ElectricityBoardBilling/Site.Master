@@ -1,0 +1,43 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.Master.cs" Inherits="ElectricityBoardBilling.SiteMaster" %>
+
+<!DOCTYPE html>
+<html>
+<head runat="server">
+    <title>Electricity Board Billing</title>
+    <link id="themeStylesheet" href="Styles/ThemeDark.css" rel="stylesheet" />
+    <script type="text/javascript">
+        function switchTheme(themePath) {
+            document.getElementById('themeStylesheet').setAttribute('href', themePath);
+        }
+    </script>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="top-bar">
+            <div class="theme-buttons" dir="rtl">
+                <button type="button" onclick="switchTheme('Styles/ThemeDark.css')" class="theme-btn dark"></button>
+                <button type="button" onclick="switchTheme('Styles/ThemeBlue.css')" class="theme-btn blue"></button>
+                <button type="button" onclick="switchTheme('Styles/ThemeGreen.css')" class="theme-btn green"></button>
+            <asp:HyperLink ID="hlLogout" runat="server" NavigateUrl="~/Logout.aspx" CssClass="logout-btn">Logout</asp:HyperLink>
+            </div>
+        </div>
+
+        <div class="header">
+            <h1>Electricity Board Billing System</h1>
+            
+<asp:Label ID="lblWelcomeAdmin" runat="server" Text="Welcome Admin" CssClass="welcome-text" />
+
+        </div>
+
+        <div class="nav">
+            <asp:HyperLink ID="hlAddBill" runat="server" NavigateUrl="~/AddBill.aspx" CssClass="nav-btn">Add Bill</asp:HyperLink>
+            <asp:HyperLink ID="hlRetrieveBill" runat="server" NavigateUrl="~/RetrieveBills.aspx" CssClass="nav-btn">Retrieve Bills</asp:HyperLink>
+        </div>
+
+        <div class="main-wrapper">
+    <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+</div>
+        
+    </form>
+</body>
+</html>

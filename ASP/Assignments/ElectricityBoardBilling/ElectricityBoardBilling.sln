@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.36227.6
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectricityBoardBilling", "ElectricityBoardBilling\ElectricityBoardBilling.csproj", "{EE3607D0-3FAD-4533-8478-E19D13868EAA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EE3607D0-3FAD-4533-8478-E19D13868EAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE3607D0-3FAD-4533-8478-E19D13868EAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE3607D0-3FAD-4533-8478-E19D13868EAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE3607D0-3FAD-4533-8478-E19D13868EAA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BBAB9C1E-50C9-42D7-AA83-4A9DE41A608B}
+	EndGlobalSection
+EndGlobal
