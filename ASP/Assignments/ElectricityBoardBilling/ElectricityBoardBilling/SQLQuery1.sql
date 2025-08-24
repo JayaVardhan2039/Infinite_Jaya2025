@@ -10,4 +10,11 @@ CREATE TABLE ElectricityBill (
     bill_amount FLOAT
 );
 
+
+
+ALTER TABLE ElectricityBill
+ADD entry_at DATETIME DEFAULT GETDATE();
+
+
+
 select * from ElectricityBill

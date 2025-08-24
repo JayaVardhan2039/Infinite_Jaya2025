@@ -15,6 +15,7 @@ namespace ElectricityBoardBilling.Components
             }
             catch (Exception ex)
             {
+
                 throw new Exception("Failed to create SQL connection. Check connection string and SQL Server status.", ex);
             }
         }
