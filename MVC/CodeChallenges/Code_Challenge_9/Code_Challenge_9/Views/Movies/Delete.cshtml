@@ -1,0 +1,22 @@
+﻿@model Code_Challenge_9.Models.Movie
+
+@{
+    ViewBag.Title = "Delete Movie";
+}
+
+<h2>Delete Movie</h2>
+
+<h3>Are you sure you want to delete this movie?</h3>
+
+<div>
+    <strong>@Model.Moviename</strong> by <strong>@Model.DirectorName</strong> released on <strong>@Model.DateofRelease.ToShortDateString()</strong>
+</div>
+
+@using (Html.BeginForm("Delete", "Movies", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Mid)
+
+    <button type="submit" class="btn btn-danger">Delete</button>
+    @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-secondary" })
+}

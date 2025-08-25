@@ -1,0 +1,22 @@
+﻿@model IEnumerable<Code_Challenge_9.Models.Movie>
+
+@{
+    ViewBag.Title = "Movies by Director";
+}
+
+<h2>Movies by @ViewBag.Director</h2>
+
+<table class="table">
+    <tr>
+        <th>Movie Name</th>
+        <th>Date of Release</th>
+    </tr>
+
+    @foreach (var movie in Model)
+    {
+        <tr>
+            <td>@movie.Moviename</td>
+            <td>@movie.DateofRelease.ToShortDateString()</td>
+        </tr>
+    }
+</table>

@@ -1,0 +1,12 @@
+﻿@{
+    ViewBag.Title = "Search Movies by Director";
+}
+
+<h2>Search Movies by Director</h2>
+
+@using (Html.BeginForm("SearchByDirector", "Movies", FormMethod.Post))
+{
+    <label for="directorName">Enter Director Name:</label>
+    <input type="text" name="directorName" required />
+    <button type="submit" class="btn btn-primary">Search</button>
+}
